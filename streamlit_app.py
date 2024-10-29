@@ -13,28 +13,6 @@ if "total_questions" not in st.session_state:
 if "target_accuracy" not in st.session_state:
     st.session_state.target_accuracy = 80
 
-hide_streamlit_style = """
-<style>
-.st-emotion-cache-1d560d5 { width: 100%; padding: 2.1rem 1rem 1rem; min-width: auto; max-width: initial; }
-</style>
-
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-    * {
-       overflow-anchor: none !important;
-       }
-</style>""", unsafe_allow_html=True)
-
 # Create the speedometer chart
 def create_speedometer(percentage, target):
 
@@ -51,9 +29,9 @@ def create_speedometer(percentage, target):
             title={"text": "Accuracy"},
             number={"suffix": "%"},
             gauge={
-                "axis": {"range": [0, 100]},
+                "axis": {"range": [None, 100]},
                 "steps": [
-                    {"range": [0, target // 2], "color": "#FF5B61"},
+                    {"range": [-1, target // 2], "color": "#FF5B61"},
                     {"range": [target // 2, target], "color": "lightgoldenrodyellow"},
                     {"range": [target, 100], "color": "lightgreen"},
                 ],
@@ -88,6 +66,7 @@ def record_answer(is_correct):
     st.session_state.total_questions += 1
     if is_correct:
         st.session_state.correct_answers += 1
+    st.rerun()
 
 
 # Function to reset stats
