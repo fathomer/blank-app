@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import base64
 
 # Set page config
-st.set_page_config(page_title="Answer Accuracy Speedometer", layout="wide")
+st.set_page_config(page_title="Answer Accuracy Speedometer")
 
 # Initialize session state variables if they don't exist
 if 'correct_answers' not in st.session_state:
@@ -13,8 +13,25 @@ if 'total_questions' not in st.session_state:
 if 'target_accuracy' not in st.session_state:
     st.session_state.target_accuracy = 80
 
+hide_streamlit_style = """
+<style>
+.st-emotion-cache-1d560d5 { width: 100%; padding: 2.1rem 1rem 1rem; min-width: auto; max-width: initial; }
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 # Get current theme
 def get_theme_colors():
+    
     # Check if dark theme is enabled
     is_dark_theme = st.config.get_option('theme.base') == 'dark'
     
@@ -44,52 +61,23 @@ def create_speedometer(percentage, target):
     theme = get_theme_colors()
     
     fig = go.Figure(go.Indicator(
-        mode = "gauge+number",
-        value = percentage,
-        domain = {'x': [0, 1], 'y': [0, 1]},
-        title = {
-            'text': "Accuracy", 
-            'font': {'size': 24, 'color': theme['text']}
-        },
-        number = {
-            'font': {'color': theme['text']},
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    value = percentage,
+    mode = "gauge+number+delta",
+    delta = {'suffix': "%", 'reference': target, 'increasing': {'color': "RebeccaPurple"}},
+    title = {'text': "Accuracy"},
+    number = {
             'suffix': "%"
-        },
-        gauge = {
-            'axis': {
-                'range': [0, 100], 
-                'tickwidth': 1, 
-                'tickcolor': theme['text'],
-                'tickfont': {'color': theme['text']}
-            },
-            'bar': {'color': "#1f77b4"},
-            'bgcolor': theme['background'],
-            'borderwidth': 2,
-            'bordercolor': theme['grid'],
-            'steps': [
-                {'range': [0, 33], 'color': 'rgba(255, 0, 0, 0.3)'},
-                {'range': [33, 66], 'color': 'rgba(255, 255, 0, 0.3)'},
-                {'range': [66, 100], 'color': 'rgba(0, 255, 0, 0.3)'}
-            ],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': target
-            }
-        }
-    ))
-    
-    fig.update_layout(
-        paper_bgcolor = theme['background'],
-        plot_bgcolor = theme['background'],
-        height = 400,
-        margin = dict(l=10, r=10, t=50, b=10),
-        font = {'color': theme['text']}
-    )
+    },
+    gauge = {'axis': {'range': [0, 100]},
+             'steps' : [
+                 {'range': [0, target // 2], 'color': "#FF5B61"},
+                 {'range': [target // 2, target], 'color': "lightgoldenrodyellow"},
+                 {'range': [target, 100], 'color': "lightgreen"}
+                 ],
+            'bar': {'color': "royalblue"},
+            'threshold' : {'line': {'color': "green", 'width': 4}, 'thickness': 0.75, 'value': target}}))
     return fig
-
-# Custom CSS for theme-aware styling
-theme = get_theme_colors()
 
 # Add title and description
 st.title("Answer Accuracy Tracker")
@@ -128,7 +116,7 @@ with col2:
 percentage = (st.session_state.correct_answers / st.session_state.total_questions * 100) if st.session_state.total_questions > 0 else 0
 
 # Display the speedometer
-st.plotly_chart(create_speedometer(percentage, target_accuracy), use_container_width=True)
+st.plotly_chart(create_speedometer(percentage, target_accuracy), use_container_width=True, theme="streamlit")
 
 # Display stats in columns with theme-aware styling
 stat_col1, stat_col2, stat_col3, stat_col4 = st.columns(4)
@@ -152,11 +140,11 @@ if st.session_state.total_questions > 0:
 st.markdown("### Performance Zones")
 zone_col1, zone_col2, zone_col3 = st.columns(3)
 with zone_col1:
-    st.markdown("🔴 0-33%: Needs Improvement")
+    st.markdown(f"🔴 0-{st.session_state.target_accuracy // 2}%: Needs Improvement")
 with zone_col2:
-    st.markdown("🟡 34-66%: Good")
+    st.markdown(f"🟡 {st.session_state.target_accuracy // 2}-{st.session_state.target_accuracy}%: Good")
 with zone_col3:
-    st.markdown("🟢 67-100%: Excellent")
+    st.markdown(f"🟢 {st.session_state.target_accuracy}-100%: Excellent")
 
 # Add reset button
 if st.button("Reset Stats"):
