@@ -48,6 +48,12 @@ def record_answer(is_correct):
     if is_correct:
         st.session_state.correct_answers += 1
 
+# Function to reset stats
+def reset_stats():
+    st.session_state.correct_answers = 0
+    st.session_state.total_questions = 0
+    st.rerun()
+
 # Create columns for the buttons
 col1, col2, col3 = st.columns([1, 2, 1])
 
@@ -88,6 +94,4 @@ with zone_col3:
 
 # Add reset button
 if st.button("Reset Stats"):
-    st.session_state.correct_answers = 0
-    st.session_state.total_questions = 0
-    st.experimental_rerun()
+    reset_stats()
