@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import base64
 
 # Set page config
-st.set_page_config(page_title="Answer Accuracy Speedometer")
+st.set_page_config(page_title="Leadership Alignment Tracker")
 
 # Initialize session state variables if they don't exist
 if "correct_answers" not in st.session_state:
@@ -52,12 +52,12 @@ def create_speedometer(percentage, target):
 
 
 # Add title and description
-st.title("Answer Accuracy Tracker")
-st.write("Click the button to record your answer as correct or incorrect.")
+st.title("Leadership Alignment Tracker")
+st.write("Do you think the leadership is aligned with the employees in the team? Lets see.")
 
 # Add target accuracy setting
 target_accuracy = st.slider(
-    "Set Target Accuracy (%)", 0, 100, st.session_state.target_accuracy, 5
+    "Set Target for Leadeship (%)", 0, 100, st.session_state.target_accuracy, 5
 )
 st.session_state.target_accuracy = target_accuracy
 
@@ -94,10 +94,10 @@ st.plotly_chart(
 
 left_col, right_col = st.columns(2)
 # Create two buttons side by side
-with left_col:
+with right_col:
     if st.button("✅ Correct", use_container_width=True):
         record_answer(True)
-with right_col:
+with left_col:
     if st.button("❌ Incorrect", use_container_width=True):
         record_answer(False)
 
@@ -116,24 +116,24 @@ with stat_col4:
 if st.session_state.total_questions > 0:
     if percentage >= target_accuracy:
         st.success(
-            f"🎉 Congratulations! You're meeting your target accuracy of {target_accuracy}%"
+            f"🎉 Congratulations on achieving {target_accuracy}%! You're making sure no one in the team gets happy (hours)"
         )
     else:
         st.warning(
-            f"Keep going! You need {(target_accuracy - percentage):.1f}% more to reach your target"
+            f"Keep going! You need {(target_accuracy - percentage):.1f}% more to stop the team from getting happy hours."
         )
 
 # Add explanation section with theme-aware markdown
 st.markdown("### Performance Zones")
 zone_col1, zone_col2, zone_col3 = st.columns(3)
 with zone_col1:
-    st.markdown(f"🔴 0-{st.session_state.target_accuracy // 2}%: Needs Improvement")
+    st.markdown(f"😀 0-{st.session_state.target_accuracy // 2}%: Happy hours everyday")
 with zone_col2:
     st.markdown(
-        f"🟡 {st.session_state.target_accuracy // 2}-{st.session_state.target_accuracy}%: Good"
+        f"😊 {st.session_state.target_accuracy // 2}-{st.session_state.target_accuracy}%: Biweekly happy hours"
     )
 with zone_col3:
-    st.markdown(f"🟢 {st.session_state.target_accuracy}-100%: Excellent")
+    st.markdown(f"😔 {st.session_state.target_accuracy}-100%: We are not having happy hours")
 
 # Add reset button
 if st.button("Reset Stats"):
