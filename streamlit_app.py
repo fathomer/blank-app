@@ -57,7 +57,7 @@ st.write("Do you think the leadership is aligned with the employees in the team?
 
 # Add target accuracy setting
 target_accuracy = st.slider(
-    "Set Target for Leadeship (%)", 0, 100, st.session_state.target_accuracy, 5
+    "Set Target for Leadeship (%). Accuracy less than this means the team wins, and gets their happy hours. Accuracy more than this means we do a rematch.", 0, 100, st.session_state.target_accuracy, 5
 )
 st.session_state.target_accuracy = target_accuracy
 
@@ -124,7 +124,7 @@ if st.session_state.total_questions > 0:
         )
 
 # Add explanation section with theme-aware markdown
-st.markdown("### Performance Zones")
+st.markdown("### Happy Hour Zones")
 zone_col1, zone_col2, zone_col3 = st.columns(3)
 with zone_col1:
     st.markdown(f"😀 0-{st.session_state.target_accuracy // 2}%: Happy hours everyday")
