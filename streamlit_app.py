@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import base64
 
 # Set page config
-st.set_page_config(page_title="Leadership Alignment Tracker")
+st.set_page_config(page_title="IAIO Leadership Alignment Tracker")
 
 # Initialize session state variables if they don't exist
 if "correct_answers" not in st.session_state:
@@ -76,7 +76,7 @@ def create_speedometer(percentage, target):
 
 
 # Add title and description
-st.title("Leadership Alignment Tracker")
+st.title("IAIO Leadership Alignment Tracker")
 st.write("Do you think the leadership is aligned with the employees in the team? Lets see.")
 
 # Add target accuracy setting
