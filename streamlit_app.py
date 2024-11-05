@@ -44,6 +44,30 @@ def create_speedometer(percentage, target):
             },
         )
     )
+
+ # Add text annotations on the left and right
+    fig.add_annotation(
+        x=0.05,  # Position on the left
+        y=0.5,   # Vertical center
+        text="Towards<br>happy hour :D",
+        showarrow=False,
+        font=dict(size=15),
+        xanchor="left",
+        yanchor="middle",
+        align="center"
+    )
+
+    fig.add_annotation(
+        x=0.955,  # Position on the right
+        y=0.5,   # Vertical center
+        text="No happy hour<br>for us :(",
+        showarrow=False,
+        font=dict(size=15),
+        xanchor="right",
+        yanchor="middle",
+        align="center"
+    )
+
     fig.update_layout(
         height = 300,
         margin = dict(l=10, r=10, t=50, b=10)
