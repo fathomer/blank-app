@@ -154,7 +154,7 @@ with zone_col1:
     st.markdown(f"😀 0-{st.session_state.target_accuracy // 2}%: Happy hours everyday")
 with zone_col2:
     st.markdown(
-        f"😊 {st.session_state.target_accuracy // 2}-{st.session_state.target_accuracy}%: Biweekly happy hours"
+        f"😊 {st.session_state.target_accuracy // 2}-{st.session_state.target_accuracy}%: Thursday happy hours"
     )
 with zone_col3:
     st.markdown(f"😔 {st.session_state.target_accuracy}-100%: We are not having happy hours")
